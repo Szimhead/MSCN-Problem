@@ -1,0 +1,6 @@
+1. true, 62
+2. true, 9580
+3. true, -800
+4. false, -650
+5. false, 245
+6. false, -3.14159e+06 (capacity)

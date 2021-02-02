@@ -1,0 +1,109 @@
+int CMscnProblem::iProblemFile(string sFileName, double** dParam)
+{
+	FILE *pf_file;
+
+	pf_file = fopen(sFileName.c_str(), "r");
+	if (pf_file == NULL)
+	{
+		return FILE_ERROR;
+	}//if (pf_file == NULL)
+
+	char c_data;
+	string s_word;
+	double d_res;
+	int i_counter = 0;
+
+	do
+	{
+		c_data = fgetc(pf_file);
+		if (c_data == ' ' || c_data == '\n' || c_data==EOF)
+		{	
+			cout << s_word << ": ";
+			d_res = d_string_to_double(s_word);
+			cout <<d_res << endl;
+			if (d_res != -1)
+			{
+				i_counter++;
+			}//if (d_res != -1)
+			s_word = "";
+		}//if (c_data == ' ' || c_data == '\n' || c_data==EOF)
+		else
+		{
+			s_word+=c_data;
+		}//else
+		
+	} while ( c_data!= EOF);
+
+	fclose(pf_file);
+
+	double *dParameters = new double[i_counter];
+	int i_index = 0;
+
+	pf_file = fopen(sFileName.c_str(), "r");
+	if (pf_file == NULL)
+	{
+		return FILE_ERROR;
+	}//if (pf_file == NULL)
+
+	do
+	{
+		c_data = fgetc(pf_file);
+		if (c_data == ' ' || c_data == '\n' || c_data == EOF)
+		{
+			d_res = d_string_to_double(s_word);
+			if (d_res != NOT_A_NUMBER)
+			{
+				(dParameters)[i_index] = d_res;
+				i_index++;
+			}//if (d_res != -1)
+			s_word = "";
+		}//if (c_data == ' ' || c_data == '\n' || c_data == EOF)
+		else
+		{
+			s_word += c_data;
+		}//else
+
+	} while (c_data != EOF);
+
+	fclose(pf_file);
+
+	*dParam = dParameters;
+	return SUCCEED;
+}// int CMscnProblem::iProblemFile(string sFileName, double** dParam)
+
+double CMscnProblem::d_string_to_double(string sText)
+{
+	double d_temp_val = 0;
+	double d_frac_val = 0;
+	int i_frac_pos = 1;
+	bool b_fraction = false;
+	for (int ii = 0; ii < sText.size(); ii++)
+	{
+		int i_str_val = sText.at(ii);
+		if (i_str_val >= '0' && i_str_val <= '9')
+		{
+			if (b_fraction)
+			{
+				d_frac_val = (i_str_val - '0') / pow(10, i_frac_pos++);
+				d_temp_val += d_frac_val;
+			}//if (b_fraction)
+			else
+			{
+				if (ii < sText.size())
+				{
+					d_temp_val *= 10;
+				}//if (ii < sText.size())
+				d_temp_val = d_temp_val + i_str_val - '0';
+			}//else
+		}//if (i_str_val >= '0' && i_str_val <= '9')
+		else if (i_str_val == '.')
+		{
+			b_fraction = true;
+		}//else if (i_str_val == '.')
+		else
+		{
+			return NOT_A_NUMBER;
+		}//else
+	}//for (int ii = 0; ii < sText.size(); ii++)
+	return d_temp_val;
+}//int Zakres::iStringToInt(string sText)

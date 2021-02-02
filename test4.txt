@@ -1,0 +1,32 @@
+D 3
+F 2
+M 1
+S 1
+sd
+50 50 50
+sf
+100 100
+sm
+200
+ss
+200
+cd
+10 10 5 5 1 1
+cf
+5 5
+cm
+1
+ud
+100
+uf
+100
+um
+100
+p
+10
+xdminmax
+0 10
+xfminmax
+0 30
+xmminmax
+0 50
